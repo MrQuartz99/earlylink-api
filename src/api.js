@@ -6,6 +6,8 @@ const app = express();
 app.use(cors());
 
 app.get(`/api/votes`, async (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log(ip);
     if(req.query.key !== process.env.API_KEY) return res.status(401).json({error: "Invalid API Key"});
     let projects = await Post.find({});
     projects = projects.filter(project => project.votes.length > 0);
