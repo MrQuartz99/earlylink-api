@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const Post = require('./models/Post.js');
+const Stats = require('./models/Stats.js');
 const app = express();
 app.use(cors());
 
@@ -33,6 +34,18 @@ app.get(`/api/votes`, async (req, res) => {
     res.json(top);
 
 });
+app.get(`/api/stats`, async (req, res) => {
+    let stats = await Stats.findOne({ clientId: process.env.CLIENT_ID });
+    let body = {
+        serverCount: stats.guilds,
+        userCount: stats.users,
+
+    }
+    res.json(body);
+     
+
+
+})
 
 
 app.listen(process.env.PORT || 3000);
