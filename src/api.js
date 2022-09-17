@@ -27,6 +27,7 @@ app.get(`/api/votes`, async (req, res) => {
             projectValue: project.votes.map((vote) => vote.voteValue).reduce((a, b) => a + b, 0),
             downvotes: project.downvotes,
             upvotes: project.upvotes,
+            type: project.type,
             votes : project.votes,
         });
     }
