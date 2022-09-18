@@ -1,7 +1,10 @@
+
 const express = require('express');
 const cors = require('cors');
 const Post = require('./models/Post.js');
+const guildConfig = require('./models/GuildConfiguration.js');
 const Stats = require('./models/Stats.js');
+
 const app = express();
 app.use(cors());
 
@@ -9,7 +12,7 @@ app.get(`/api/votes`, async (req, res) => {
     
     if(req.query.key !== process.env.API_KEY) return res.status(401).json({error: "Invalid API Key"});
     let projects = await Post.find({});
-    projects = projects.filter(project => project.votes.length > 0);
+    projects = projects.filter(p => p.votes.length > 0);
     const top = [];
     for (const project of projects) {
         top.push({
@@ -29,6 +32,7 @@ app.get(`/api/votes`, async (req, res) => {
             upvotes: project.upvotes,
             type: project.type,
             votes : project.votes,
+            createdAt: project.createdAt,
         });
     }
     top.sort((a, b) => b.projectValue - a.projectValue);
@@ -44,11 +48,17 @@ app.get(`/api/stats`, async (req, res) => {
         userCount: stats.users,
 
     }
-    res.json(body);
      
 
 
 })
 
 
-app.listen(process.env.PORT || 3000);
+app.get('/api/daos', async (req, res) => {
+    if(req.query.key !== process.env.API_KEY) return res.status(401).json({error: "Invalid API Key"});
+    let stats = await Stats.findOne({ clientId: process.env.CLIENT_ID });
+    res.json(stats.guildsData);
+    
+  })
+// Run the server!
+app.listen(3000)

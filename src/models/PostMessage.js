@@ -3,7 +3,6 @@ const { model, Schema}  = require('mongoose');
 module.exports = model(
 	'PostMessages' ,
 	 new Schema({
-        
         messageId: { type: String, required: true  , unique: true },
         channelId: { type: String , default: null },
         guildId: { type: String , default: null },
