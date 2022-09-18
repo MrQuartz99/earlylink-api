@@ -48,6 +48,7 @@ app.get(`/api/stats`, async (req, res) => {
         userCount: stats.users,
 
     }
+    res.json(body);
      
 
 
