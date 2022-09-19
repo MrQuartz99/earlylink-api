@@ -43,6 +43,7 @@ app.get(`/api/votes`, async (req, res) => {
 app.get(`/api/stats`, async (req, res) => {
     if(req.query.key !== process.env.API_KEY) return res.status(401).json({error: "Invalid API Key"});
     let stats = await Stats.findOne({ clientId: process.env.CLIENT_ID });
+    if(!stats) return res.status(404).json({error: "No stats found"});
     let body = {
         serverCount: stats.guilds,
         userCount: stats.users,
@@ -58,6 +59,7 @@ app.get(`/api/stats`, async (req, res) => {
 app.get('/api/daos', async (req, res) => {
     if(req.query.key !== process.env.API_KEY) return res.status(401).json({error: "Invalid API Key"});
     let stats = await Stats.findOne({ clientId: process.env.CLIENT_ID });
+    if(!stats) return res.status(404).json({error: "No stats found"});
     res.json(stats.guildsData);
     
   })
